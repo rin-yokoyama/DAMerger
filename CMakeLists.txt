@@ -20,26 +20,28 @@ set(ANAROOT_DIR_PATH $ENV{TARTSYS} CACHE STRING "path to anaroot directory" )
 #---Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
 find_package(ROOT REQUIRED COMPONENTS RIO Net Proof )
 #find_package(LibXml2 REQUIRED)
-#find_package(yaml-cpp)
-#set(YAML_CPP_LIB_DIR ${YAML_CPP_CMAKE_DIR}/../../../lib CACHE PATH "yaml-cpp lib dir")
+find_package(yaml-cpp)
+set(YAML_CPP_LIB_DIR ${YAML_CPP_CMAKE_DIR}/../../../lib CACHE PATH "yaml-cpp lib dir")
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 #---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
 
 # include directories
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/idaq2root)
-#include_directories(${YAML_CPP_INCLUDE_DIR})
+include_directories(${YAML_CPP_INCLUDE_DIR})
 include_directories(${ANAROOT_DIR_PATH}/include)
 #include_directories(${CMAKE_BINARY_DIR}/generated)
 
 # link directories
 link_directories(${ANAROOT_DIR_PATH}/lib)
-#link_directories(${YAML_CPP_LIB_DIR})
+link_directories(${YAML_CPP_LIB_DIR})
 link_directories(${PWD}/idaq2root)
 link_directories(${ROOTSYS}/lib)
 #ROOT_GENERATE_DICTIONARY(G__MergerData include/BigRIPSTreeData.h include/OutputTreeData.hpp 
 #        trace_analyzer/PspmtAnalyzerData.hpp trace_analyzer/PspmtData.hpp LINKDEF include/TreeDataLinkDef.h)
 
+add_subdirectory(core)
 add_subdirectory(idaq2root)
+add_subdirectory(tsscan)
 add_subdirectory(share)
+add_subdirectory(config)

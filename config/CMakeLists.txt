@@ -1,0 +1,1 @@
+install(FILES ts_merger_config.yaml DESTINATION config)
