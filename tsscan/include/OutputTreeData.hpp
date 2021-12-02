@@ -18,11 +18,10 @@ public:
 	std::vector<U> output_vec_;
 
 	OutputTreeData() {}
-	OutputTreeData(const void *input_ptr)
+	OutputTreeData(const T *input_ptr)
 	{
-		input_ = *(const T *)input_ptr;
+		input_ = *input_ptr;
 	}
-	OutputTreeData(const T &input_event) : input_(input_event) {}
 	/**
 	 * @brief Construct a new Output Tree Data object
 	 *        initialized with T obj

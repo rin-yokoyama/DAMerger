@@ -13,6 +13,7 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/install/ CACHE PATH "install dir" F
 # path definitions
 set(DAMERGER_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib/ CACHE STRING "path to install lib")
 set(MERGER_WORK_DIR $ENV{HOME}/merger_work/ CACHE STRING "path to working directory")
+set(GRETINA_DECODER_DIR $ENV{HOME}/Grape CACHE STRING "path to gretina daq decoder directory")
 set(HOME $ENV{HOME} )
 set(ANAROOT_DIR_PATH $ENV{TARTSYS} CACHE STRING "path to anaroot directory" )
 #configure_file( anamerger/include/LibraryConfig.h.in ${CMAKE_BINARY_DIR}/generated/LibraryConfig.h)
@@ -30,6 +31,7 @@ include(${ROOT_USE_FILE})
 # include directories
 include_directories(${YAML_CPP_INCLUDE_DIR})
 include_directories(${ANAROOT_DIR_PATH}/include)
+include_directories(${GRETINA_DECODER_DIR}/cmake/inc)
 #include_directories(${CMAKE_BINARY_DIR}/generated)
 
 # link directories
@@ -37,8 +39,7 @@ link_directories(${ANAROOT_DIR_PATH}/lib)
 link_directories(${YAML_CPP_LIB_DIR})
 link_directories(${PWD}/idaq2root)
 link_directories(${ROOTSYS}/lib)
-#ROOT_GENERATE_DICTIONARY(G__MergerData include/BigRIPSTreeData.h include/OutputTreeData.hpp 
-#        trace_analyzer/PspmtAnalyzerData.hpp trace_analyzer/PspmtData.hpp LINKDEF include/TreeDataLinkDef.h)
+link_directories(${GRETINA_DECODER_DIR}/cmake/build)
 
 add_subdirectory(core)
 add_subdirectory(idaq2root)

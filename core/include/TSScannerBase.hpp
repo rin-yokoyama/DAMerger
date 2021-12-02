@@ -26,9 +26,9 @@ public:
 	virtual ~TSScannerBase();
 
 	void Configure(const std::string &yaml_node_name);
-	virtual void SetReader();															  // virtual function to define TTreeReaderValue
-	void Scan();																		  // scan through events from first_entry_ to last_entry_ of the tree
-	std::map<ULong64_t, T> *LoadEntries(const ULong64_t &ts_low, const ULong64_t &ts_up); // loads entries in a time rage from ts_low_ to ts_up_ to the ts_entry_map_
+	virtual void SetReader();															// virtual function to define TTreeReaderValue
+	void Scan();																		// scan through events from first_entry_ to last_entry_ of the tree
+	std::map<ULong64_t, T> *LoadEntries(const Double_t &ts_low, const Double_t &ts_up); // loads entries in a time rage from ts_low_ to ts_up_ to the ts_entry_map_
 	std::map<ULong64_t, ULong64_t> GetIEntryMap() { return ts_i_entry_map_; }
 	std::map<ULong64_t, T> GetMap() { return ts_entry_map_; }
 	ULong64_t GetIEntry(const ULong64_t &ts) { return ts_i_entry_map_[ts]; }
@@ -135,10 +135,20 @@ void TSScannerBase<T>::Configure(const std::string &yaml_node_name)
 			for (ULong64_t i = 0; !branch->GetEntry(i) && i < tree_reader_->GetEntries(true); ++i)
 			{
 			} // loop until the first entry of the branch
-			TClass *tclass = (TClass *)gROOT->GetListOfClasses()->FindObject(class_name.c_str());
-			void *addr = tclass->New();
-			auto na_pair = std::pair<std::string, void *>(class_name, addr);
-			branch_map_.emplace(std::pair<std::string, std::pair<std::string, void *>>(name, na_pair));
+			void *addr = nullptr;
+			if (class_name != "")
+			{
+				TClass *tclass = (TClass *)gROOT->GetListOfClasses()->FindObject(class_name.c_str());
+				addr = tclass->New();
+				auto na_pair = std::pair<std::string, void *>(class_name, addr);
+				branch_map_.emplace(std::pair<std::string, std::pair<std::string, void *>>(name, na_pair));
+			}
+			else
+			{
+				addr = new ULong64_t();
+				auto na_pair = std::pair<std::string, void *>("ULong64_t", addr);
+				branch_map_.emplace(std::pair<std::string, std::pair<std::string, void *>>(name, na_pair));
+			}
 			std::cout << kMsgPrefix << "added an output branch, " << class_name << " " << name
 					  << " to the address " << addr << std::endl;
 			branch->ResetReadEntry();
@@ -198,11 +208,17 @@ void TSScannerBase<T>::Scan()
 }
 
 template <class T>
-std::map<ULong64_t, T> *TSScannerBase<T>::LoadEntries(const ULong64_t &ts_low, const ULong64_t &ts_up)
+std::map<ULong64_t, T> *TSScannerBase<T>::LoadEntries(const Double_t &ts_low, const Double_t &ts_up)
 {
+	ULong64_t low = ts_low;
+	ULong64_t up = ts_up;
 	ts_entry_map_.clear();
-	auto it = ts_i_entry_map_.lower_bound(ts_low);
-	auto last = ts_i_entry_map_.upper_bound(ts_up);
+	if (ts_low < 0)
+		low = 0;
+	if (ts_up < 0)
+		up = 0;
+	auto it = ts_i_entry_map_.lower_bound(low);
+	auto last = ts_i_entry_map_.upper_bound(up);
 	if (it == ts_i_entry_map_.end() || it == last)
 	{
 		return &ts_entry_map_;

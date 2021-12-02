@@ -2,11 +2,13 @@ CompassTSScanner:
   InputFileName: "rootfiles/compass/DataR_CH8@V1730B_47_runsync_3.root"
   TreeName: Data_R
   BranchName: Timestamp
+  OtherBranches:
+    - Channel
 #  FirstEntry: 0
 #  LastEntry: 10000
 
 IDaqLUPOTSScanner:
-  InputFileName: "rootfiles/idaq/data0014.root"
+  InputFileName: "rootfiles/idaq/data0016.root"
   TreeName: tree
   BranchName: IDaqData
 #  FirstEntry: 0
@@ -17,10 +19,37 @@ CompassTSMerger:
   TreeName: TS
   BranchName: TS
   ClassName: OutputTreeData<ULong64_t, ULong64_t>
-  TimeWindowLow: -1000000000
-  TimeWindowUp: 1000000000
-  TimeStampScale: 40
-  ScanWindow: 1E+9  
+  TimeWindowLow: 10000000000 # in ns
+  TimeWindowUp: 10000000000 # in ns
+  TimeStampScale1: 10 # scale to ns
+  #TimeStampScale2: 0.001 # scale to ns
+  ScanWindow: 10 
   PrintFrequency: 10
   OtherBranches:
     - Channel
+
+HicariTSScanner:
+  InputFileName: "rootfiles/gretina/run0067.root"
+  TreeName: build
+  BranchName: mode3Event
+#  FirstEntry: 0
+#  LastEntry: 10000
+
+IDaqMyriadTSScanner:
+  InputFileName: "rootfiles/idaq/data0014.root"
+  TreeName: tree
+  BranchName: IDaqData
+#  FirstEntry: 0
+#  LastEntry: 10000
+
+HicariTSMerger:
+  OutputFileName: rootfiles/ts/IDaq_Hicari_TS.root
+  TreeName: TS
+  BranchName: TS
+  ClassName: OutputTreeData<IDaqData, Mode3Event>
+  TimeWindowLow: 1000000000000
+  TimeWindowUp: 1000000000000
+  #TimeStampScale1: 40
+  #TimeStampScale2: 40
+  ScanWindow: 10  
+  PrintFrequency: 10
