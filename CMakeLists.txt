@@ -43,6 +43,7 @@ link_directories(${GRETINA_DECODER_DIR}/cmake/build)
 
 add_subdirectory(core)
 add_subdirectory(idaq2root)
+add_subdirectory(grape_dump)
 add_subdirectory(tsscan)
 add_subdirectory(share)
 add_subdirectory(config)

@@ -28,25 +28,25 @@ CompassTSMerger:
   OtherBranches:
     - Channel
 
-HicariTSScanner:
-  InputFileName: "rootfiles/gretina/run0067.root"
-  TreeName: build
-  BranchName: mode3Event
+GrapeTSScanner:
+  InputFileName: "rootfiles/grape_dump/run0074.root"
+  TreeName: OutputTree
+  BranchName: grape_dumped
 #  FirstEntry: 0
 #  LastEntry: 10000
 
 IDaqMyriadTSScanner:
-  InputFileName: "rootfiles/idaq/data0014.root"
+  InputFileName: "rootfiles/idaq/data0016.root"
   TreeName: tree
   BranchName: IDaqData
 #  FirstEntry: 0
 #  LastEntry: 10000
 
-HicariTSMerger:
-  OutputFileName: rootfiles/ts/IDaq_Hicari_TS.root
+GrapeTSMerger:
+  OutputFileName: rootfiles/ts/IDaq_Grape_TS.root
   TreeName: TS
   BranchName: TS
-  ClassName: OutputTreeData<IDaqData, Mode3Event>
+  ClassName: OutputTreeData<IDaqData, GrapeData>
   TimeWindowLow: 1000000000000
   TimeWindowUp: 1000000000000
   #TimeStampScale1: 40

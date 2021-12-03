@@ -2,15 +2,15 @@
 #include "TSScanDataLinkDef.h"
 #include "YamlParameter.hpp"
 #include "IDaqMyriadTSScanner.hpp"
-#include "HicariTSScanner.hpp"
+#include "GrapeTSScanner.hpp"
 #include "TreeMerger.hpp"
 #include "OutputTreeData.hpp"
-#include "Trace.hh"
+#include "GrapeData.hpp"
 
 /** prints usage **/
 void usage(char *argv0)
 {
-	std::cout << "[HicariTSMergerMain]: Usage: "
+	std::cout << "[GrapeTSMergerMain]: Usage: "
 			  << argv0 << "-c [configuration_file_name]"
 			  << std::endl;
 }
@@ -55,34 +55,34 @@ int main(int argc, char **argv)
 
 		/** merges BigRIPS events to implant events **/
 		{
-			std::cout << "[HicariTSMergerMain]: merging hicari TS to Isobe DAQ TS..." << std::endl;
+			std::cout << "[GrapeTSMergerMain]: merging Grape TS to Isobe DAQ TS..." << std::endl;
 
 			/** timestamp scanors **/
-			HicariTSScanner hicari_ts_scanner;
+			GrapeTSScanner grape_ts_scanner;
 			IDaqMyriadTSScanner idaq_ts_scanner;
 
 			/** configures timestamp scanners with the yaml file **/
-			hicari_ts_scanner.Configure("HicariTSScanner");
-			idaq_ts_scanner.Configure("IDaqLUPOTSScanner");
+			grape_ts_scanner.Configure("GrapeTSScanner");
+			idaq_ts_scanner.Configure("IDaqMyriadTSScanner");
 
 			/** sets TTreeReaderValue objects **/
-			hicari_ts_scanner.SetReader();
+			grape_ts_scanner.SetReader();
 			idaq_ts_scanner.SetReader();
 
 			/** scans timestamps through the tree **/
-			std::cout << "[HicariTSMergerMain]: scanning Hicari events..." << std::endl;
-			hicari_ts_scanner.Scan();
-			std::cout << "[HicariTSMergerMain]: scanning Isobe DAQ events..." << std::endl;
+			std::cout << "[GrapeTSMergerMain]: scanning Grape events..." << std::endl;
+			grape_ts_scanner.Scan();
+			std::cout << "[GrapeTSMergerMain]: scanning Isobe DAQ events..." << std::endl;
 			idaq_ts_scanner.Scan();
 
-			std::cout << "[HicariTSMergerMain]: Hicari map size: " << hicari_ts_scanner.GetIEntryMap().size() << std::endl;
-			std::cout << "[HicariTSMergerMain]: Isobe DAQ map size: " << idaq_ts_scanner.GetIEntryMap().size() << std::endl;
+			std::cout << "[GrapeTSMergerMain]: Grape map size: " << grape_ts_scanner.GetIEntryMap().size() << std::endl;
+			std::cout << "[GrapeTSMergerMain]: Isobe DAQ map size: " << idaq_ts_scanner.GetIEntryMap().size() << std::endl;
 
 			/** runs merger **/
-			TreeMerger<OutputTreeData<IDaqData, Mode3Event>, IDaqData, Mode3Event> hicari_ts_merger(&idaq_ts_scanner, &hicari_ts_scanner, false);
-			hicari_ts_merger.Configure("HicariTSMerger");
-			hicari_ts_merger.Merge();
-			hicari_ts_merger.Write();
+			TreeMerger<OutputTreeData<IDaqData, GrapeData>, IDaqData, GrapeData> grape_ts_merger(&idaq_ts_scanner, &grape_ts_scanner, false);
+			grape_ts_merger.Configure("GrapeTSMerger");
+			grape_ts_merger.Merge();
+			grape_ts_merger.Write();
 
 			std::cout << std::endl;
 			std::cout << std::endl;
@@ -94,13 +94,13 @@ int main(int argc, char **argv)
 	catch (std::string msg)
 	{
 		std::cout << msg << std::endl;
-		std::cout << "[HicariTSMergerMain]: exiting from main() due to an error" << std::endl;
+		std::cout << "[GrapeTSMergerMain]: exiting from main() due to an error" << std::endl;
 		return 1;
 	}
 	catch (std::bad_alloc)
 	{
-		std::cout << "[HicariTSMergerMain]: bad_alloc occured while setting up." << std::endl;
-		std::cout << "[HicariTSMergerMain]: exiting from main() due to the error" << std::endl;
+		std::cout << "[GrapeTSMergerMain]: bad_alloc occured while setting up." << std::endl;
+		std::cout << "[GrapeTSMergerMain]: exiting from main() due to the error" << std::endl;
 		return 1;
 	}
 

@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 
 		/** merges BigRIPS events to implant events **/
 		{
-			std::cout << "[CompassTSMergerMain]: merging hicari TS to Isobe DAQ TS..." << std::endl;
+			std::cout << "[CompassTSMergerMain]: merging Compass TS to Isobe DAQ TS..." << std::endl;
 
 			/** timestamp scanors **/
 			CompassTSScanner compass_ts_scanner;
