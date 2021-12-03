@@ -62,8 +62,8 @@ An example config file will be installed to config/ts_merger_config.yaml
   - input_ (Isobe DAQ data)
   - output_vec_ (std::vector<ULong64_t> correlated compass timestamps) 
 
- ## compass_ts_merger
-Merger for Isobe DAQ LUPO timestamps and Compass timestamps
+ ## grape_ts_merger
+Merger for Isobe DAQ Myriad timestamps and GRAPE timestamps
 
 ```Usage:
 grape_ts_merger -c [config_yaml_file (required)]
