@@ -5,8 +5,8 @@ Data merger tools for DA05 experiment
 
 - Required Prerequisites:
 	- [cmake](https://cmake.org/) version 3.17.5 or later is confirmed to work
-	- [yaml-cpp]https://github.com/jbeder/yaml-cpp) version 0.6.3 or later is recommended
-		- Build option `=DBUILD_SHARED=ON` is required
+	- [yaml-cpp](https://github.com/jbeder/yaml-cpp) version 0.6.3 or later is recommended
+		- Build option `-DBUILD_SHARED=ON` is required
 	- [ROOT](https://root.cern.ch/) version 6 is recommended
 	  - Requires xml 
 	- [anaroot](https://ribf.riken.jp/RIBFDAQ/index.php?Tools%2FAnalysis%2FANAROOT%2FInstallation) version 4.5.39 is confirmed to work
