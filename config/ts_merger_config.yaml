@@ -1,55 +1,55 @@
 CompassTSScanner:
-  InputFileName: "rootfiles/compass/DataR_CH8@V1730B_47_runsync_3.root"
-  TreeName: Data_R
-  BranchName: Timestamp
-  OtherBranches:
-    - Channel
+  InputFileName: "rootfiles/compass/run227.root"
+  TreeName: tree
+  BranchName: "1HzTS.t"
+#  OtherBranches:
+#    - Channel
 #  FirstEntry: 0
 #  LastEntry: 10000
 
-IDaqLUPOTSScanner:
-  InputFileName: "rootfiles/idaq/data0016.root"
+IDaqCompassLUPOTSScanner:
+  InputFileName: "rootfiles/idaq/data0227.root"
   TreeName: tree
   BranchName: IDaqData
 #  FirstEntry: 0
 #  LastEntry: 10000
 
 CompassTSMerger:
-  OutputFileName: rootfiles/ts/IDaq_Compass_TS.root
+  OutputFileName: rootfiles/ts/IDaq0227_Compass0227_TS.root
   TreeName: TS
   BranchName: TS
-  ClassName: OutputTreeData<ULong64_t, ULong64_t>
-  TimeWindowLow: 10000000000 # in ns
-  TimeWindowUp: 10000000000 # in ns
+  ClassName: OutputTreeData<IDaqData, ULong64_t>
+  TimeWindowLow: 10000000000000 # in ns
+  TimeWindowUp: 10000000000000 # in ns
   TimeStampScale1: 10 # scale to ns
   #TimeStampScale2: 0.001 # scale to ns
   ScanWindow: 10 
   PrintFrequency: 10
-  OtherBranches:
-    - Channel
+  #OtherBranches:
+  #  - Channel
 
 GrapeTSScanner:
-  InputFileName: "rootfiles/grape_dump/run0074.root"
+  InputFileName: "rootfiles/grape_dump/run0026.root"
   TreeName: OutputTree
   BranchName: grape_dumped
 #  FirstEntry: 0
 #  LastEntry: 10000
 
 IDaqMyriadTSScanner:
-  InputFileName: "rootfiles/idaq/data0016.root"
+  InputFileName: "rootfiles/idaq/data0227.root"
   TreeName: tree
   BranchName: IDaqData
 #  FirstEntry: 0
 #  LastEntry: 10000
 
 GrapeTSMerger:
-  OutputFileName: rootfiles/ts/IDaq_Grape_TS.root
+  OutputFileName: rootfiles/ts/IDaq0227_Grape0026_TS.root
   TreeName: TS
   BranchName: TS
   ClassName: OutputTreeData<IDaqData, GrapeData>
-  TimeWindowLow: 1000000000000
-  TimeWindowUp: 1000000000000
-  #TimeStampScale1: 40
-  #TimeStampScale2: 40
+  TimeWindowLow: 10000000000000
+  TimeWindowUp: 10000000000000
+  #TimeStampScale1: 10
+  #TimeStampScale2: 10
   ScanWindow: 10  
   PrintFrequency: 10

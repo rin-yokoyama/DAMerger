@@ -20,7 +20,7 @@ protected:
 			throw kMsgPrefix + "In GetTS(), tree_data_ is null";
 		if (!tree_data_->Get())
 			throw kMsgPrefix + "In GetTS(), tree_data_->Get() returned null";
-		return *tree_data_->Get() / 1000.;
+		return *tree_data_->Get();
 	}
 };
 

@@ -4,9 +4,9 @@
  * @brief main cpp for Isobe DAQ data to ROOT converter
  * @version 0.1
  * @date 2021-11-30
- * 
+ *
  * @copyright Copyright (c) 2021
- * 
+ *
  */
 #include <iostream>
 #include "TArtEventStore.hh"
@@ -75,18 +75,22 @@ int main(int argc, char **argv)
 	IDaqData data;					/// output data container object
 	tree.Branch("IDaqData", "IDaqData", &data);
 
-	ULong64_t first_lupots = 0;
+	ULong64_t first_compass_lupots = 0;
+	ULong64_t first_brips_lupots = 0;
 	ULong64_t first_myriadts = 0;
+	ULong64_t n_event = 0;
+	/// event loop
 	while (estore->GetNextEvent())
 	{
-		ULong64_t lupo_ts;
+		ULong64_t compass_lupo_ts;
+		ULong64_t brips_lupo_ts;
 		ULong64_t myriad_ts;
-		/// event loop
 		for (int i = 0; i < rawevent->GetNumSeg(); ++i)
 		{
 			TArtRawSegmentObject *seg = rawevent->GetSegment(i);
 			int det = seg->GetDetector();
 			int mod = seg->GetModule();
+			int fp = seg->GetFP();
 
 			/// function to read timestamp data
 			auto get_ts = [seg]()
@@ -98,28 +102,38 @@ int main(int argc, char **argv)
 				return (valh << 32) + vall;
 			};
 
-			if (det == 60)
-			{ // LUPO
-				lupo_ts = get_ts() - first_lupots;
+			if (det == 60 && fp == 8)
+			{ // LUPO Compass
+				// compass_lupo_ts = get_ts() - first_compass_lupots;
+				compass_lupo_ts = get_ts();
+			}
+
+			if (det == 60 && fp == 63)
+			{ // LUPO BigRIPS
+				// brips_lupo_ts = get_ts() - first_brips_lupots;
+				brips_lupo_ts = get_ts();
 			}
 
 			if (det == 49)
 			{ // MYRIAD
-				myriad_ts = get_ts() - first_myriadts;
+				// myriad_ts = get_ts() - first_myriadts;
+				myriad_ts = get_ts();
 			}
 
 		} // for(int i=0;i<rawevent->GetNumSeg();i++)
 
-		if (first_lupots == 0 && first_myriadts == 0)
+		if (first_compass_lupots == 0 && first_brips_lupots == 0 && first_myriadts == 0)
 		{
-			first_lupots = lupo_ts;
+			first_compass_lupots = compass_lupo_ts;
+			first_brips_lupots = brips_lupo_ts;
 			first_myriadts = myriad_ts;
 		}
 
-		data.SetTimestamps(lupo_ts, myriad_ts);
+		data.SetTimestamps(compass_lupo_ts, brips_lupo_ts, myriad_ts, n_event);
 		tree.Fill();
 
 		estore->ClearData();
+		++n_event;
 	}
 	tree.Write();
 	output_file.Close();

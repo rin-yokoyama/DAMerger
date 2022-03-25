@@ -1,12 +1,12 @@
 /**
  * @file GrapeDataDumpSelector.cpp
  * @author Rin Yokoyama (yokoyama@cns.s.u-tokyo.ac.jp)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2021-12-03
- * 
+ *
  * @copyright Copyright (c) 2021
- * 
+ *
  */
 #include "GrapeDataDumpSelector.hpp"
 
@@ -101,7 +101,7 @@ void GrapeDataDumpSelector::SlaveBegin(TTree *tree)
 	if (fOutputTree)
 		delete fOutputTree;
 	fOutputTree = new TTree("OutputTree", "OutputTree");
-	fOutputTree->Branch("grape_dumped", "GrapeDumpData", &output_data_);
+	fOutputTree->Branch("grape_dumped", "GrapeData", &output_data_);
 	fOutputTree->SetDirectory(fOutputFile);
 	fOutputTree->AutoSave();
 }
@@ -138,13 +138,16 @@ Bool_t GrapeDataDumpSelector::Process(Long64_t entry)
 		auto chn = trace0.GetChn();
 		if (hole == 11 && crystal == 0 && slot == 2 && chn == 9)
 		{
-			gr_data.SetTimestamp(trace0.GetTS());
+			gr_data.SetTimestamp(trace0.GetTS(), entry);
 		}
 	};
 
-	output_data_ = gr_data;
-	// Fill the tree and the histogram
-	fOutputTree->Fill();
+	if (gr_data.GetHasIDaqTS())
+	{
+		output_data_ = gr_data;
+		// Fill the tree and the histogram
+		fOutputTree->Fill();
+	}
 
 	return kTRUE;
 }

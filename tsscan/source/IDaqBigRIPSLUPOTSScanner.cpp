@@ -1,10 +1,10 @@
-#include "IDaqLUPOTSScanner.hpp"
+#include "IDaqBigRIPSLUPOTSScanner.hpp"
 
 class IDaqData;
 
-const std::string IDaqLUPOTSScanner::kMsgPrefix("[IDaqLUPOTSScanner]:");
+const std::string IDaqBigRIPSLUPOTSScanner::kMsgPrefix("[IDaqBigRIPSLUPOTSScanner]:");
 
-void IDaqLUPOTSScanner::SetReader()
+void IDaqBigRIPSLUPOTSScanner::SetReader()
 {
 	TSScannerBase<IDaqData>::SetReader();
 	std::string br_name = yaml_reader_->GetString("BranchName");
@@ -13,7 +13,7 @@ void IDaqLUPOTSScanner::SetReader()
 	return;
 }
 
-Bool_t IDaqLUPOTSScanner::IsInGate()
+Bool_t IDaqBigRIPSLUPOTSScanner::IsInGate()
 {
 	return true;
 }

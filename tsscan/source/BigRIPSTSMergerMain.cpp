@@ -1,15 +1,15 @@
 #include <iostream>
 #include "TSScanDataLinkDef.h"
 #include "YamlParameter.hpp"
-#include "IDaqCompassLUPOTSScanner.hpp"
-#include "CompassTSScanner.hpp"
+#include "IDaqBigRIPSLUPOTSScanner.hpp"
+#include "BigRIPSTSScanner.hpp"
 #include "TreeMerger.hpp"
 #include "OutputTreeData.hpp"
 
 /** prints usage **/
 void usage(char *argv0)
 {
-	std::cout << "[CompassTSMergerMain]: Usage: "
+	std::cout << "[BigRIPSTSMergerMain]: Usage: "
 			  << argv0 << "-c [configuration_file_name]"
 			  << std::endl;
 }
@@ -54,34 +54,34 @@ int main(int argc, char **argv)
 
 		/** merges BigRIPS events to implant events **/
 		{
-			std::cout << "[CompassTSMergerMain]: merging Compass TS to Isobe DAQ TS..." << std::endl;
+			std::cout << "[BigRIPSTSMergerMain]: merging BigRIPS TS to Isobe DAQ TS..." << std::endl;
 
 			/** timestamp scanors **/
-			CompassTSScanner compass_ts_scanner;
-			IDaqCompassLUPOTSScanner idaq_ts_scanner;
+			BigRIPSTSScanner BigRIPS_ts_scanner;
+			IDaqBigRIPSLUPOTSScanner idaq_ts_scanner;
 
 			/** configures timestamp scanners with the yaml file **/
-			compass_ts_scanner.Configure("CompassTSScanner");
-			idaq_ts_scanner.Configure("IDaqCompassLUPOTSScanner");
+			BigRIPS_ts_scanner.Configure("BigRIPSTSScanner");
+			idaq_ts_scanner.Configure("IDaqBigRIPSLUPOTSScanner");
 
 			/** sets TTreeReaderValue objects **/
-			compass_ts_scanner.SetReader();
+			BigRIPS_ts_scanner.SetReader();
 			idaq_ts_scanner.SetReader();
 
 			/** scans timestamps through the tree **/
-			std::cout << "[CompassTSMergerMain]: scanning compass events..." << std::endl;
-			compass_ts_scanner.Scan();
-			std::cout << "[CompassTSMergerMain]: scanning Isobe DAQ events..." << std::endl;
+			std::cout << "[BigRIPSTSMergerMain]: scanning BigRIPS events..." << std::endl;
+			BigRIPS_ts_scanner.Scan();
+			std::cout << "[BigRIPSTSMergerMain]: scanning Isobe DAQ events..." << std::endl;
 			idaq_ts_scanner.Scan();
 
-			std::cout << "[CompassTSMergerMain]: compass map size: " << compass_ts_scanner.GetIEntryMap().size() << std::endl;
-			std::cout << "[CompassTSMergerMain]: Isobe DAQ map size: " << idaq_ts_scanner.GetIEntryMap().size() << std::endl;
+			std::cout << "[BigRIPSTSMergerMain]: BigRIPS map size: " << BigRIPS_ts_scanner.GetIEntryMap().size() << std::endl;
+			std::cout << "[BigRIPSTSMergerMain]: Isobe DAQ map size: " << idaq_ts_scanner.GetIEntryMap().size() << std::endl;
 
 			/** runs merger **/
-			TreeMerger<OutputTreeData<IDaqData, ULong64_t>, IDaqData, ULong64_t> compass_ts_merger(&idaq_ts_scanner, &compass_ts_scanner, true);
-			compass_ts_merger.Configure("CompassTSMerger");
-			compass_ts_merger.Merge();
-			compass_ts_merger.Write();
+			TreeMerger<OutputTreeData<IDaqData, ULong64_t>, IDaqData, ULong64_t> BigRIPS_ts_merger(&idaq_ts_scanner, &BigRIPS_ts_scanner, true);
+			BigRIPS_ts_merger.Configure("BigRIPSTSMerger");
+			BigRIPS_ts_merger.Merge();
+			BigRIPS_ts_merger.Write();
 
 			std::cout << std::endl;
 			std::cout << std::endl;
@@ -93,13 +93,13 @@ int main(int argc, char **argv)
 	catch (std::string msg)
 	{
 		std::cout << msg << std::endl;
-		std::cout << "[CompassTSMergerMain]: exiting from main() due to an error" << std::endl;
+		std::cout << "[BigRIPSTSMergerMain]: exiting from main() due to an error" << std::endl;
 		return 1;
 	}
 	catch (std::bad_alloc)
 	{
-		std::cout << "[CompassTSMergerMain]: bad_alloc occured while setting up." << std::endl;
-		std::cout << "[CompassTSMergerMain]: exiting from main() due to the error" << std::endl;
+		std::cout << "[BigRIPSTSMergerMain]: bad_alloc occured while setting up." << std::endl;
+		std::cout << "[BigRIPSTSMergerMain]: exiting from main() due to the error" << std::endl;
 		return 1;
 	}
 

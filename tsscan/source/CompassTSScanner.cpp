@@ -13,7 +13,7 @@ void CompassTSScanner::SetReader()
 
 Bool_t CompassTSScanner::IsInGate()
 {
-	Int_t ch = *(Int_t *)branch_map_.at("Channel").second;
-	if (ch == 8)
-		return true;
+	// Int_t ch = *(Int_t *)branch_map_.at("Channel").second;
+	// if (ch == 8)
+	return true;
 }
