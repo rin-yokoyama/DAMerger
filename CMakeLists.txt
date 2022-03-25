@@ -19,7 +19,7 @@ set(ANAROOT_DIR_PATH $ENV{TARTSYS} CACHE STRING "path to anaroot directory" )
 #configure_file( anamerger/include/LibraryConfig.h.in ${CMAKE_BINARY_DIR}/generated/LibraryConfig.h)
 
 #---Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
-find_package(ROOT REQUIRED COMPONENTS RIO Net Proof )
+find_package(ROOT REQUIRED COMPONENTS RIO Net Proof Physics)
 #find_package(LibXml2 REQUIRED)
 find_package(yaml-cpp)
 set(YAML_CPP_LIB_DIR ${YAML_CPP_CMAKE_DIR}/../../../lib CACHE PATH "yaml-cpp lib dir")

@@ -131,14 +131,16 @@ Bool_t GrapeDataDumpSelector::Process(Long64_t entry)
 	GrapeData gr_data;
 	for (int i = 0; i < data->GetMult(); ++i)
 	{
-		auto &trace0 = data->GetHit(i)->GetTrace()->at(0);
-		auto hole = trace0.GetHole();
-		auto crystal = trace0.GetCrystal();
-		auto slot = trace0.GetSlot();
-		auto chn = trace0.GetChn();
-		if (hole == 11 && crystal == 0 && slot == 2 && chn == 9)
-		{
-			gr_data.SetTimestamp(trace0.GetTS(), entry);
+		auto traces = data->GetHit(i)->GetTrace();
+		for (auto &trace : *traces){
+			auto hole = trace.GetHole();
+			auto crystal = trace.GetCrystal();
+			auto slot = trace.GetSlot();
+			auto chn = trace.GetChn();
+			if (hole == 11 && crystal == 0 && slot == 2 && chn == 9)
+			{
+				gr_data.SetTimestamp(trace.GetTS(), entry);
+			}
 		}
 	};
 

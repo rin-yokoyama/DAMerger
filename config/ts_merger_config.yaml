@@ -47,8 +47,8 @@ GrapeTSMerger:
   TreeName: TS
   BranchName: TS
   ClassName: OutputTreeData<IDaqData, GrapeData>
-  TimeWindowLow: 10000000000000
-  TimeWindowUp: 10000000000000
+  TimeWindowLow: 100000000000000
+  TimeWindowUp: 100000000000000
   #TimeStampScale1: 10
   #TimeStampScale2: 10
   ScanWindow: 10  
