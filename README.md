@@ -33,8 +33,10 @@ idaq2root -i [input_ridf_file (required)] -o [output_root_file (default:[input_r
 
 - Output
   - TTree name: "tree"
-  - lupo_ts_
+  - compass_lupo_ts_
+  - brips_lupo_ts_
   - myriad_ts_
+  - event_id_
 
 ## grape_dump
 Dumps GRAPE data for merging
@@ -47,6 +49,7 @@ grape_dump -i [input_file (required)] -o [output_file (default:[input_file]_dump
   - TTree name: OutputTree
   - has_idaq_ts_ (flag if this event has an Isobe DAQ trigger)
   - ts_
+  - event_id_
 
 ## compass_ts_merger
 Merger for Isobe DAQ LUPO timestamps and Compass timestamps
